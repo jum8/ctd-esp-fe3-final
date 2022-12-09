@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useGlobalStates } from "../Components/utils/global.context";
 
-//Este componente debera ser estilado como "dark" o "light" dependiendo del theme del Context
 
 const Detail = () => {
   const params = useParams();
   const [dentist, setDentist] = useState({});
 	const navigate = useNavigate();
+	const { theme } = useGlobalStates();
 
   useEffect(() => {
     fetch(`https://jsonplaceholder.typicode.com/users/${params.id}`)
@@ -16,7 +17,7 @@ const Detail = () => {
   }, [params.id]);
 
   return (
-    <>
+    <div className={`details ${theme}`}>
       <h1>Detail Dentist {dentist.id}</h1>
       <table>
         <thead>
@@ -37,7 +38,7 @@ const Detail = () => {
         </tbody>
       </table>
 			<button onClick={() => 	navigate(-1)}>Volver</button>
-    </>
+    </div>
   );
 };
 

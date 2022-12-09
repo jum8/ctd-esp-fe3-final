@@ -1,14 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useGlobalStates } from "./utils/global.context";
 
 const Card = ({ name, username, id, showFavButton }) => {
-  const addFav = (e) => {
-		const favs = JSON.parse(localStorage.getItem("favs")) || [];
-		if(favs.find(fav => fav.id === id)) {
+	const { favsState, favsDispatch } = useGlobalStates();
+
+	const addFav = (fav) => {
+		if(favsState.find(fav => fav.id === id)) {
 			alert("Dentist already added");
 		} else {
-			favs.push({name, username, id});
-			localStorage.setItem("favs", JSON.stringify(favs));
+			console.log(fav);
+			favsDispatch({type: "ADD_FAV", payload: fav});
 			alert("Dentist added successfully");
 		}
   };
@@ -25,7 +27,7 @@ const Card = ({ name, username, id, showFavButton }) => {
         <p>{username}</p>
 				<p>{id}</p>
         {showFavButton && 
-				<button onClick={(e) => addFav(e)} className="favButton">
+				<button onClick={() => addFav({name, username, id})} className="favButton">
           Add fav
         </button>}
       </div>
